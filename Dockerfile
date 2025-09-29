@@ -14,4 +14,4 @@ COPY . .
 EXPOSE 5000
 
 #CMD [ "python", "main.py" ]
-CMD sh -c "gunicorn --bind 0.0.0.0:5000 --workers 4 --forwarded-allow-ips=*wsgi:app"
+CMD sh -c "gunicorn --bind 0.0.0.0:5000 --workers 4 --forwarded-allow-ips="*" wsgi:app
