@@ -5,6 +5,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
+    default-libmysqlclient-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
@@ -14,5 +16,6 @@ COPY . .
 
 EXPOSE 5000
 
-CMD sh -c "gunicorn --bind 0.0.0.0:5000 --workers 4 --forwarded-allow-ips='*' wsgi:app"
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "main:app"]
+
 
