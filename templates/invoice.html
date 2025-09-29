@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Factura {{ invoice.invoice_number }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>🍞 Panadería Delicias</h2>
+        <h3>FACTURA N° {{ invoice.invoice_number }}</h3>
+    </div>
+
+    <p><strong>Cliente:</strong> {{ order.user.username }}</p>
+    <p><strong>Fecha:</strong> {{ order.created_at.strftime('%d/%m/%Y') }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.order_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ "%.2f"|format(item.price) }}</td>
+                <td>${{ "%.2f"|format(item.total_price) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><strong>Total: ${{ "%.2f"|format(order.total_amount) }}</strong></p>
+</body>
+</html>

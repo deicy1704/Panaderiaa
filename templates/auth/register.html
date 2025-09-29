@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Registro - Panadería Delicias del Hogar{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h3 class="text-center mb-0 text-dark">
+                        <i class="fas fa-user-plus me-2"></i>Crear Cuenta
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nombre de Usuario</label>
+                            {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), placeholder="tu_usuario") }}
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), placeholder="tu@email.com") }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="Mínimo 6 caracteres") }}
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password2" class="form-label">Confirmar Contraseña</label>
+                            {{ form.password2(class="form-control" + (" is-invalid" if form.password2.errors else ""), placeholder="Repite la contraseña") }}
+                            {% if form.password2.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password2.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-user-plus me-2"></i>Crear Cuenta
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <p class="mb-0">¿Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}" class="text-warning fw-bold">Inicia sesión aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

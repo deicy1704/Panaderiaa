@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="hero-bakery text-white p-5 rounded position-relative overflow-hidden">
+                <div class="hero-overlay"></div>
+                <div class="row align-items-center position-relative">
+                    <div class="col-md-8">
+                        <h1 class="display-4 fw-bold">Bienvenido a Panadería Delicias del Hogar</h1>
+                        <p class="lead fs-4">Pan fresco y deliciosos productos horneados diariamente con los mejores ingredientes</p>
+                        <div class="d-flex gap-3 mt-4">
+                            <a href="{{ url_for('products.index') }}" class="btn btn-warning btn-lg">
+                                <i class="fas fa-shopping-bag me-2"></i>Comprar Ahora
+                            </a>
+                            <a href="#featured" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-star me-2"></i>Ver Destacados
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=300&fit=crop&crop=center" 
+                             alt="Pan artesanal" class="rounded-circle hero-image shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    {% if categories %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4 display-5 fw-bold">Nuestras Especialidades</h2>
+            <div class="row g-4">
+                {% set category_images = {
+                    'Pan': 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=250&fit=crop&crop=center',
+                    'Pasteles': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=250&fit=crop&crop=center',
+                    'Pastelería': 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=400&h=250&fit=crop&crop=center',
+                    'Galletas': 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=250&fit=crop&crop=center',
+                    'Bread': 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=250&fit=crop&crop=center',
+                    'Cakes': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=250&fit=crop&crop=center',
+                    'Pastries': 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=400&h=250&fit=crop&crop=center',
+                    'Cookies': 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=250&fit=crop&crop=center'
+                    
+                } %}
+                {% for category in categories %}
+                <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                    <div class="card h-100 category-card">
+                        <div class="card-img-container">
+                            <img src="{{ category_images[category.name] or 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=250&fit=crop&crop=center' }}" 
+                                 class="card-img-top" alt="{{ category.name }}" style="height: 200px; object-fit: cover;">
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">{{ category.name }}</h5>
+                            <p class="card-text">{{ category.description or 'Deliciosos ' + category.name.lower() }}</p>
+                            <a href="{{ url_for('products.category', category_id=category.id) }}" class="btn btn-outline-warning">
+                                <i class="fas fa-arrow-right me-2"></i>Ver Productos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Featured Products Section -->
+    {% if featured_products %}
+    <div class="row mb-5" id="featured">
+        <div class="col-12">
+            <h2 class="text-center mb-5 display-5 fw-bold">Productos Destacados</h2>
+            <div class="row g-4">
+                {% set product_images = {
+                    'Sourdough Bread': 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop&crop=center',
+                    'Chocolate Croissant': 'https://images.unsplash.com/photo-1555507036-ab794f4afe5c?w=400&h=300&fit=crop&crop=center',
+                    'Vanilla Birthday Cake': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop&crop=center',
+                    'Chocolate Chip Cookies': 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop&crop=center',
+                    'Strawberry Tart': 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop&crop=center',
+                    'Pan de Masa Madre': 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop&crop=center',
+                    'Croissant de Chocolate': 'https://images.unsplash.com/photo-1555507036-ab794f4afe5c?w=400&h=300&fit=crop&crop=center',
+                    'Pastel de Vainilla': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop&crop=center',
+                    'Galletas Chispas Chocolate': 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop&crop=center',
+                    'Tarta de Fresa': 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop&crop=center'
+                } %}
+                {% for product in featured_products %}
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="card h-100 product-card">
+                        <div class="card-img-container position-relative">
+                            <img src="{{ product_images[product.name] or 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop&crop=center' }}" 
+                                 class="card-img-top" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+                            <div class="featured-badge">
+                                <i class="fas fa-star"></i> Destacado
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                            <p class="card-text text-muted">{{ product.description or '' }}</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="h4 text-warning fw-bold">${{ "%.2f"|format(product.price) }}</span>
+                                    <small class="text-muted">{{ product.category.name }}</small>
+                                </div>
+                                {% if current_user.is_authenticated %}
+                                <form method="POST" action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" class="d-inline w-100">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-warning w-100">
+                                        <i class="fas fa-cart-plus me-2"></i>Agregar al Carrito
+                                    </button>
+                                </form>
+                                {% else %}
+                                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-warning w-100">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión para Comprar
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="cta-section text-white p-5 rounded text-center position-relative overflow-hidden">
+                <div class="cta-overlay"></div>
+                <div class="position-relative">
+                    <h3 class="display-6 fw-bold mb-3">¿Listo para probar algo increíble?</h3>
+                    <p class="lead fs-5 mb-4">Explora nuestra selección completa de productos recién horneados</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="{{ url_for('products.index') }}" class="btn btn-warning btn-lg">
+                            <i class="fas fa-store me-2"></i>Ver Todos los Productos
+                        </a>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Crear Cuenta
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-bread-slice fa-3x text-warning"></i>
+                        </div>
+                        <h5 class="fw-bold">Pan Fresco Diario</h5>
+                        <p class="text-muted">Horneado cada mañana con ingredientes naturales y recetas tradicionales</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-heart fa-3x text-danger"></i>
+                        </div>
+                        <h5 class="fw-bold">Hecho con Amor</h5>
+                        <p class="text-muted">Cada producto es elaborado artesanalmente con dedicación y cariño</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-shipping-fast fa-3x text-success"></i>
+                        </div>
+                        <h5 class="fw-bold">Entrega Rápida</h5>
+                        <p class="text-muted">Recibe tus productos favoritos frescos y en tiempo récord</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

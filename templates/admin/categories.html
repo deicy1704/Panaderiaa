@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Administrar Categorías - Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-tags me-2"></i>Administrar Categorías
+                </h1>
+                <div>
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-2"></i>Volver al Panel
+                    </a>
+                    <a href="{{ url_for('admin.add_category') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Agregar Categoría
+                    </a>
+                </div>
+            </div>
+            
+            {% if categories %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Productos</th>
+                                    <th>Creado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for category in categories %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">{{ category.name }}</div>
+                                    </td>
+                                    <td>{{ category.description or '-' }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ category.products|length }} productos</span>
+                                    </td>
+                                    <td>{{ category.created_at.strftime('%d/%m/%Y') }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('admin.edit_category', id=category.id) }}" class="btn btn-outline-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{{ url_for('admin.delete_category', id=category.id) }}" class="btn btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-tags fa-3x text-muted mb-3"></i>
+                <h3>No se encontraron categorías</h3>
+                <p class="text-muted">Empieza agregando tu primera categoría.</p>
+                <a href="{{ url_for('admin.add_category') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Agregar Categoría
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Plantilla para Agregar/Editar Categoría -->
+{% if request.endpoint in ['admin.add_category', 'admin.edit_category'] %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">{{ title }}</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.name.label(class="form-label") }}
+                        {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else "")) }}
+                        {% if form.name.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description.label(class="form-label") }}
+                        {{ form.description(class="form-control", rows="3") }}
+                        <div class="form-text">Descripción opcional para esta categoría</div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ url_for('admin.categories') }}" class="btn btn-secondary me-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Categoría</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

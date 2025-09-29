@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Panadería Delicias del Hogar{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+                </h1>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">Productos</h6>
+                                    <h3>{{ total_products }}</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-cookie-bite fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">Categorias</h6>
+                                    <h3>{{ total_categories }}</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-tags fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">pedidos</h6>
+                                    <h3>{{ total_orders }}</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-shopping-bag fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">usuario</h6>
+                                    <h3>{{ total_users }}</h3>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-users fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">acciones rapidas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <a href="{{ url_for('admin.add_product') }}" class="btn btn-primary w-100">
+                                        <i class="fas fa-plus me-2"></i>agregar producto
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <a href="{{ url_for('admin.add_category') }}" class="btn btn-success w-100">
+                                        <i class="fas fa-plus me-2"></i>agregar categoria
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <a href="{{ url_for('admin.products') }}" class="btn btn-info w-100">
+                                        <i class="fas fa-list me-2"></i>gestionar productos
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <a href="{{ url_for('admin.categories') }}" class="btn btn-warning w-100">
+                                        <i class="fas fa-list me-2"></i>gestionar categorias
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+         
+               <!-- Pedidos Recientes -->
+            {% if recent_orders %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Pedidos Recientes</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Pedido</th>
+                                            <th>Cliente</th>
+                                            <th>Total</th>
+                                            <th>Estado</th>
+                                            <th>Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in recent_orders %}
+                                        <tr>
+                                            <td>#{{ order.id }}</td>
+                                            <td>{{ order.user.username }}</td>
+                                            <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ 'success' if order.status == 'delivered' else 'warning' if order.status == 'pending' else 'info' }}">
+                                                    {{ order.status.title() }}
+                                                </span>
+                                            </td>
+                                            <td>{{ order.created_at.strftime('%d/%m/%Y') }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

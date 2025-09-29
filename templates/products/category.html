@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }} - Panadería Dulces Delicias {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1>{{ category.name }}</h1>
+                    {% if category.description %}
+                    <p class="text-muted">{{ category.description }}</p>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('products.index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Todos los productos
+                </a>
+            </div>
+            
+            <!-- Products Grid -->
+            {% if products.items %}
+            <div class="row">
+                {% for product in products.items %}
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card h-100">
+                        {% if product.image_url %}
+                        <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="fas fa-cookie-bite fa-4x text-muted"></i>
+                        </div>
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description or '' }}</p>
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="h5 text-primary">${{ "%.2f"|format(product.price) }}</span>
+                                    {% if current_user.is_authenticated %}
+                                    <form method="POST" action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" class="d-inline">
+                                        <div class="input-group input-group-sm" style="width: 120px;">
+                                            <input type="number" name="quantity" class="form-control" value="1" min="1" max="10">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-cart-plus"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                    {% else %}
+                                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-sm">
+                                        Inicia sesión para ordenar
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if products.pages > 1 %}
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {% if products.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('products.category', category_id=category.id, page=products.prev_num) }}">Anterior</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for page_num in products.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != products.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('products.category', category_id=category.id, page=page_num) }}">{{ page_num }}</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                            {% endif %}
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if products.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('products.category', category_id=category.id, page=products.next_num) }}">Siguiente</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+            
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-cookie-bite fa-3x text-muted mb-3"></i>
+                <h3>No hay productos en esta categoríay</h3>
+                <p class="text-muted">Vuelve pronto para ver nuevos productos</p>
+                <a href="{{ url_for('products.index') }}" class="btn btn-primary">Ver todos los productos</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

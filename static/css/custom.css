@@ -1,0 +1,361 @@
+/* Custom styles for Panadería Delicias del Hogar */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Body and general styles */
+body {
+    background-color: var(--bs-body-bg);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+/* Headings with bakery font */
+h1, h2, h3, h4, h5, h6, .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* Hero Section Styles */
+.hero-bakery {
+    background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #CD853F 100%);
+    min-height: 500px;
+    border-radius: 20px;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(139, 69, 19, 0.3);
+    border-radius: 20px;
+}
+
+.hero-image {
+    width: 250px;
+    height: 250px;
+    border: 5px solid rgba(255, 215, 0, 0.8);
+    transition: transform 0.3s ease;
+}
+
+.hero-image:hover {
+    transform: scale(1.05);
+}
+
+/* Navbar customizations */
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: #FFD700 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #FFD700;
+}
+
+/* Card enhancements */
+.card {
+    border: none;
+    box-shadow: 0 4px 20px rgba(139, 69, 19, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(139, 69, 19, 0.2);
+    transform: translateY(-5px);
+}
+
+/* Category Cards */
+.category-card {
+    background: linear-gradient(145deg, #FFFAF0, #F5F5DC);
+}
+
+.category-card:hover {
+    background: linear-gradient(145deg, #F5F5DC, #FFFAF0);
+}
+
+/* Product Cards */
+.product-card {
+    background: linear-gradient(145deg, #FFFFFF, #FFFAF0);
+}
+
+.card-img-container {
+    overflow: hidden;
+    border-radius: 15px 15px 0 0;
+}
+
+.card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+/* Featured Badge */
+.featured-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #8B4513;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Product cards */
+.card-img-top {
+    border-top-left-radius: calc(0.375rem - 1px);
+    border-top-right-radius: calc(0.375rem - 1px);
+}
+
+/* Button enhancements */
+.btn {
+    border-radius: 25px;
+    font-weight: 600;
+    padding: 10px 25px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border: none;
+    color: #8B4513;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.btn-warning:hover {
+    background: linear-gradient(45deg, #FFA500, #FF8C00);
+    color: #5D2E0A;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+}
+
+.btn-outline-warning {
+    border: 2px solid #FFD700;
+    color: #FFD700;
+    background: transparent;
+}
+
+.btn-outline-warning:hover {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border-color: #FFA500;
+    color: #8B4513;
+    transform: translateY(-2px);
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+    min-height: 300px;
+    border-radius: 20px;
+}
+
+.cta-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(139, 69, 19, 0.2);
+    border-radius: 20px;
+}
+
+/* Features Section */
+.feature-item {
+    padding: 30px 20px;
+    background: rgba(255, 250, 240, 0.5);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    background: rgba(255, 250, 240, 0.8);
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Form enhancements */
+.form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* Animation classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Custom badges */
+.badge {
+    font-size: 0.75em;
+}
+
+/* Table enhancements */
+.table {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table th {
+    background-color: var(--bs-light);
+    border-bottom: 2px solid var(--bs-border-color);
+    font-weight: 600;
+}
+
+/* Alert enhancements */
+.alert {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+/* Pagination */
+.pagination .page-link {
+    border-radius: 0.375rem;
+    margin: 0 0.25rem;
+    border: 1px solid var(--bs-border-color);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+/* Cart quantity controls */
+.input-group-sm .form-control {
+    text-align: center;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .lead {
+        font-size: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Dark theme overrides */
+[data-bs-theme="dark"] .bg-light {
+    background-color: var(--bs-gray-800) !important;
+}
+
+[data-bs-theme="dark"] .text-muted {
+    color: var(--bs-gray-400) !important;
+}
+
+/* Bakery-specific styles */
+.text-warning {
+    color: #FFD700 !important;
+}
+
+.bg-warning {
+    background: linear-gradient(45deg, #FFD700, #FFA500) !important;
+}
+
+/* Price styling */
+.price-tag {
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    color: #8B4513;
+}
+
+/* Animations */
+@keyframes bounce {
+    0%, 20%, 60%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    80% {
+        transform: translateY(-5px);
+    }
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+/* Print styles */
+@media print {
+    .navbar, .btn, .pagination {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .hero-bakery {
+        min-height: 400px;
+        padding: 3rem 1.5rem !important;
+    }
+    
+    .hero-image {
+        width: 200px;
+        height: 200px;
+        margin-top: 2rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .display-5 {
+        font-size: 1.8rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+}

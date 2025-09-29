@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}Administrar Productos - Administración{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-cookie-bite me-2"></i>Administrar Productos
+                </h1>
+                <div>
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-2"></i>Volver al Panel
+                    </a>
+                    <a href="{{ url_for('admin.add_product') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Agregar Producto
+                    </a>
+                </div>
+            </div>
+            
+            {% if products.items %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Nombre</th>
+                                    <th>Categoría</th>
+                                    <th>Precio</th>
+                                    <th>Destacado</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products.items %}
+                                <tr>
+                                    <td>
+                                        {% if product.image_url %}
+                                        <img src="{{ product.image_url }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ product.name }}">
+                                        {% else %}
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-cookie-bite text-muted"></i>
+                                        </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold">{{ product.name }}</div>
+                                        <small class="text-muted">{{ product.description[:50] + '...' if product.description and product.description|length > 50 else product.description or '' }}</small>
+                                    </td>
+                                    <td>{{ product.category.name }}</td>
+                                    <td>${{ "%.2f"|format(product.price) }}</td>
+                                    <td>
+                                        {% if product.featured %}
+                                        <span class="badge bg-warning">Destacado</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if product.active else 'secondary' }}">
+                                            {{ 'Activo' if product.active else 'Inactivo' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('admin.edit_product', id=product.id) }}" class="btn btn-outline-primary" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{{ url_for('admin.delete_product', id=product.id) }}" class="btn btn-outline-danger" onclick="return confirm('¿Seguro que deseas eliminar este producto?')" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paginación -->
+            {% if products.pages > 1 %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if products.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.products', page=products.prev_num) }}">Anterior</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for page_num in products.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != products.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('admin.products', page=page_num) }}">{{ page_num }}</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                            {% endif %}
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if products.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin.products', page=products.next_num) }}">Siguiente</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+            
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-cookie-bite fa-3x text-muted mb-3"></i>
+                <h3>No se encontraron productos</h3>
+                <p class="text-muted">Comienza agregando tu primer producto.</p>
+                <a href="{{ url_for('admin.add_product') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Agregar Producto
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal Agregar/Editar Producto -->
+{% if request.endpoint in ['admin.add_product', 'admin.edit_product'] %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">{{ title }}</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else "")) }}
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.name.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.price.label(class="form-label") }}
+                            {{ form.price(class="form-control" + (" is-invalid" if form.price.errors else "")) }}
+                            {% if form.price.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.price.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description.label(class="form-label") }}
+                        {{ form.description(class="form-control", rows="3") }}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.category_id.label(class="form-label") }}
+                            {{ form.category_id(class="form-select" + (" is-invalid" if form.category_id.errors else "")) }}
+                            {% if form.category_id.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.category_id.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.image_url.label(class="form-label") }}
+                            {{ form.image_url(class="form-control") }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                {{ form.featured(class="form-check-input") }}
+                                {{ form.featured.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                {{ form.active(class="form-check-input") }}
+                                {{ form.active.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ url_for('admin.products') }}" class="btn btn-secondary me-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

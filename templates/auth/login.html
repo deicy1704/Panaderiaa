@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión - Panadería Delicias del Hogar{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h3 class="text-center mb-0 text-dark">
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), placeholder="tu@email.com") }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="••••••••") }}
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <p class="mb-0">¿No tienes una cuenta? <a href="{{ url_for('auth.register') }}" class="text-warning fw-bold">Regístrate aquí</a></p>
+                    <hr class="my-2">
+                    <small class="text-muted">
+                        <strong>Usuario demo:</strong> admin@bakery.com<br>
+                        <strong>Contraseña:</strong> admin123
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
