@@ -48,9 +48,16 @@
                         </table>
                     </div>
                     
-                    <div class="mt-4">
+                     <div class="mt-4">
+                        <!-- ✅ CÓDIGO ACTUALIZADO: Mostrar estado con colores según el valor -->
                         <p><strong>Estado:</strong> 
-                            <span class="badge bg-warning">{{ order.status.title() }}</span>
+                            {% if order.status == 'Paid' %}
+                                <span class="badge bg-success">Pagado</span>
+                            {% elif order.status == 'Pending' %}
+                                <span class="badge bg-warning">Pendiente</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ order.status }}</span>
+                            {% endif %}
                         </p>
                         <p class="text-muted">
                             Te notificaremos cuando tu pedido esté listo para recoger. 
@@ -58,7 +65,9 @@
                         </p>
                     </div>
 
-                    <!-- --- INICIO: SECCIÓN DE FACTURA EN PDF --- -->
+
+                    
+                    <!-- - INICIO: SECCIÓN DE FACTURA EN PDF - -->
                     {% if order.invoice and order.invoice.pdf_file_path %}
                     <div class="mt-4 p-4 bg-light border rounded">
                         <h6 class="mb-3"><i class="fas fa-file-invoice me-2"></i> Tu Factura</h6>
