@@ -11,6 +11,7 @@ import os
 from datetime import datetime
 from fpdf import FPDF
 
+
 @bp.route('/')
 @login_required
 def index():
@@ -206,8 +207,6 @@ def checkout():
     
     return render_template('payment_sim.html', order=order)
 
-
-
 @bp.route('/confirmation/<int:order_id>')
 @login_required
 def order_confirmation(order_id):
@@ -234,7 +233,6 @@ def download_invoice(order_id):
         download_name=f"factura_{order.id}.pdf",
         mimetype='application/pdf'
     )
-    
 # =============== SIMULACIÓN DE PASARELA DE PAGOS ===============
 @bp.route('/simulate-payment', methods=['POST'])
 @login_required
@@ -256,7 +254,7 @@ def simulate_payment():
             "transaction_id": f"txn_sim_{order_id}",
             "message": "Pago simulado con éxito",
             "order_id": order_id
-        })
+        }), 200
     else:
         return jsonify({
             "status": "declined",
@@ -265,16 +263,8 @@ def simulate_payment():
         }), 402
 
 
-
 @bp.route('/payment-sim/<int:order_id>')
 @login_required
 def payment_sim(order_id):
     order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
     return render_template('cart/payment_sim.html', order=order)
-    
-    
-    
-    
-    
-    
-    
