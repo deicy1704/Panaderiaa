@@ -204,8 +204,7 @@ def checkout():
     
     db.session.commit()
     flash('Order placed successfully!', 'success')
-    
-     return redirect(url_for('cart.order_confirmation', order_id=order.id))
+    return redirect(url_for('cart.order_confirmation', order_id=order.id))
 
 @bp.route('/confirmation/<int:order_id>')
 @login_required
