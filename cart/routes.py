@@ -267,4 +267,4 @@ def simulate_payment():
 @login_required
 def payment_sim(order_id):
     order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
-    return render_template('cart/payment_sim.html', order=order)
+    return render_template('payment_sim.html', order=order)
